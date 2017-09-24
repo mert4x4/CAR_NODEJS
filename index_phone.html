@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<body style="background-color:#d7ff49;">
+	<style>
+
+</style>
+<h1><strong><span id="label_x"; style="color: #4997ff;">X</span></strong></h1>
+<h1><strong><span id="label_y"; style="color: #4997ff;">X</span></strong></h1>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	var dir;
+	
+	var socket = io.connect('http://195.174.59.249:500/');
+
+	socket.on('connect', function () {
+		socket.send('connected from phone');
+	});
+
+	window.ondevicemotion = function(event) {
+		var accelerationX = parseInt(event.accelerationIncludingGravity.x);
+		var accelerationY = parseInt(event.accelerationIncludingGravity.y);
+		
+		document.getElementById("label_x").innerHTML = accelerationX;
+		document.getElementById("label_y").innerHTML = accelerationY;	
+
+	if(accelerationX >= -10 && accelerationX <= -3)
+	{
+		dir = 'F';
+	}
+	if(accelerationY >= 3 && accelerationX >= -10 && accelerationX <= -3)
+	{
+		dir = 'R';
+	}
+	if(accelerationY <= -3 && accelerationX >= -10 && accelerationX <= -3)
+	{
+		dir = 'L';
+	}
+	if(accelerationX <= 2 && accelerationX >= -2 && accelerationY >= -2 && accelerationY <= 2)
+	{
+		dir = 'S';
+	}
+	if(accelerationX >= 3 && accelerationX <= 10)
+	{
+		dir = 'B';
+	}
+	if(accelerationX >= 3 && accelerationX <= 10 && accelerationY >= 3)
+	{
+		dir = 'r';
+	}
+	if(accelerationX >= 3 && accelerationX <= 10 && accelerationY <= -3)
+	{
+		dir = 'l';
+	}
+	socket.send(dir);
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<body style="background-color:#ff9f4c;">
+	<style>
+
+</style>
+<canvas id="Canvas_up" width="100" height="100" style="position:absolute; top:150px; left:700px; border:3px solid #0c0c0c;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+</canvas>
+<canvas id="Canvas_down" width="100" height="100" style="position:absolute; top:260px; left:700px; border:3px solid #0c0c0c;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+</canvas>
+<canvas id="Canvas_left" width="100" height="100" style="position:absolute; top:260px; left:590px; border:3px solid #0c0c0c;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+</canvas>
+<canvas id="Canvas_right" width="100" height="100" style="position:absolute; top:260px; left:810px; border:3px solid #0c0c0c;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+</canvas>
+
+<h1>mert4x4 car client 2.0.0</h1>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	var dir;
+	var dir1;
+	var dir2;
+
+	var UpPress;
+	var LeftPress;
+	var RightPress;
+	var DownPress;
+
+	var socket = io.connect('http://195.174.59.249:500/');
+
+	var counter = 0;
+
+	socket.on('connect', function () {
+		socket.send('connected from pc');
+	});
+
+	document.addEventListener("keydown", keyDown, false);
+	document.addEventListener("keyup", keyUp, false);
+
+	function ChangeCanvasColor(canvasname,color){let c = document.getElementById(canvasname);let ctx = c.getContext("2d");ctx.beginPath();ctx.rect(0, 0, 100, 100);ctx.fillStyle = color;ctx.fill();}
+
+	function keyDown(e) {
+		let keyCode = e.keyCode;
+		if(keyCode == 13)
+			socket.send('Q');
+
+		if(keyCode == 16)
+			socket.send('W');
+
+		if(keyCode==38) {
+			UpPress = true;
+			ChangeCanvasColor("Canvas_up","blue");
+		}
+		if(keyCode==39) {
+			RightPress = true;
+			ChangeCanvasColor("Canvas_right","blue");
+		}
+		if(keyCode==40) {
+			DownPress = true;
+			ChangeCanvasColor("Canvas_down","blue");
+		}
+		if(keyCode==37) {
+			LeftPress = true;
+			ChangeCanvasColor("Canvas_left","blue");
+		}				
+	}
+	
+	function keyUp(e) {
+		let keyCode = e.keyCode;
+		if(keyCode==38) {
+			UpPress = false;
+			ChangeCanvasColor("Canvas_up","#00ff00");
+		}
+		if(keyCode==39) {
+			RightPress = false;
+			ChangeCanvasColor("Canvas_right","#00ff00");
+		}
+		if(keyCode==40) {
+			DownPress = false;
+			ChangeCanvasColor("Canvas_down","#00ff00");
+		}
+		if(keyCode==37) {
+			LeftPress = false;
+			ChangeCanvasColor("Canvas_left","#00ff00");
+		}
+	}
+
+	myVar = setInterval(alertFunc, 1);
+
+	function alertFunc() {
+		if (UpPress && RightPress)
+			dir = 'R';
+		else if (UpPress && LeftPress)
+			dir = 'L';
+		else if (DownPress && RightPress)
+			dir = 'r';
+		else if (DownPress && LeftPress)
+			dir = 'l';
+		else if (UpPress)
+			dir = 'F';
+		else if (DownPress)
+			dir = 'B';
+		if (!UpPress && !DownPress)
+			dir = 'S';
+
+		dir1 = dir;
+		if(dir1 != dir2)
+		{
+			socket.send(dir);
+		}
+		dir2 = dir;
+	}
+
+
+</script>
+</body>
+</html>
