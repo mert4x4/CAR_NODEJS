@@ -2,13 +2,54 @@
 <html>
 <body style="background-color:#d7ff49;">
 	<style>
+.RedButton {
+  padding: 30px 40px;
+  font-size: 32px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #ad4545;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+.RedButton:hover {background-color: #963a3a}
+.RedButton:active {
+  background-color: #963a3a;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.YellowButton {
+  padding: 30px 40px;
+  font-size: 32px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #ffdd00;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+.YellowButton:hover {background-color: #e8c900}
+.YellowButton:active {
+  background-color: #e8c900;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
 
 </style>
+
 <h1><strong><span id="label_x"; style="color: #4997ff;">X</span></strong></h1>
 <h1><strong><span id="label_y"; style="color: #4997ff;">X</span></strong></h1>
 
+<button class="YellowButton" onclick="socket.send('Q')" id="Button_Off">ON</button>
+<button class="RedButton" onclick="socket.send('W')" id="Button_On">OFF</button>
+
 <script src="/socket.io/socket.io.js"></script>
 <script>
+
 	var dir;
 	
 	var socket = io.connect('http://195.174.59.249:500/');
@@ -54,6 +95,7 @@
 	}
 	socket.send(dir);
 }
+
 
 </script>
 </body>

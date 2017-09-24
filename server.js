@@ -11,7 +11,6 @@
 	var pcorphone;
 
 	const server = http.createServer((req, res) => {
-		console.log(req);
 		var ConnectedIp = req.connection.remoteAddress;
 		if(req.url == '/')
 		{
